@@ -1,4 +1,3 @@
-// eslint-disable-next-line import/no-extraneous-dependencies
 const { test, expect } = require('@jest/globals');
 
 const { normalizeURL } = require('../src/crawl');
