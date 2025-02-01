@@ -20,6 +20,10 @@
     "class-methods-use-this": "off",
     "prefer-destructuring": ["error", { "object": true, "array": false }],
     "no-unused-vars": ["off", { "argsIgnorePattern": "req|res|next|val" }],
-    "linebreak-style": "off"
+    "linebreak-style": "off",
+    "no-plusplus": "off",
+    "no-continue": "off",
+    "no-await-in-loop": "off",
+    "no-restricted-syntax": "off"
   }
 }

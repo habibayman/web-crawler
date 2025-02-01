@@ -3,10 +3,30 @@
 /* eslint-disable no-continue */
 
 const { URL } = require('url');
-const { JSDOM } = require('jsdom'); // eslint-disable-line import/no-extraneous-dependencies
 
 // helper
-const isAbsoluteUrl = (url) => /^[a-zA-Z][a-zA-Z\d+\-.]*:/.test(url);
+const isAbsoluteUrl = (url) => {
+  const protocolRegex = /^[a-zA-Z][a-zA-Z\d+\-.]*:/;
+  return protocolRegex.test(url);
+};
+
+const isValidHtml = async (url) => {
+  const resp = await fetch(url);
+  // console.log(await resp.text());
+
+  if (resp.status > 399) {
+    console.error(`Error ${resp.status} in fetch on page: ${url}`);
+    return false;
+  }
+
+  const contentType = resp.headers.get('content-type');
+  if (!contentType || !contentType.includes('text/html')) {
+    console.error(`Skipping non-HTML page: ${url}`);
+    return false;
+  }
+
+  return resp;
+};
 
 const normalizeURL = (url) => {
   try {
@@ -19,10 +39,10 @@ const normalizeURL = (url) => {
 
 const getURLsFromHTML = (htmlBody, baseUrl) => {
   const urls = [];
-  const re = /href="([^"]+)"/g;
+  const hrefRegex = /href="([^"]+)"/g;
   let match;
 
-  while ((match = re.exec(htmlBody)) !== null) {
+  while ((match = hrefRegex.exec(htmlBody))) {
     let url = match[1];
 
     // skip invalid URLs
@@ -40,14 +60,28 @@ const getURLsFromHTML = (htmlBody, baseUrl) => {
   }
   return urls;
 };
-// const getURLsFromHTML = (html) => {
-//   const urls = [];
-//   const re = /href="([^"]+)"/g;
-//   let match;
-//   while ((match = re.exec(html)) !== null) {
-//     urls.push(match[1]);
-//   }
-//   return urls;
-// };
 
-module.exports = { normalizeURL, getURLsFromHTML };
+const crawl = async (baseURL, currentURL, pages) => {
+  if (!currentURL.includes(baseURL)) return; // check if both URLs belong to the same domain
+
+  //check if the page has already been visited
+  const normalizedURL = normalizeURL(currentURL);
+  if (pages.has(normalizedURL)) return pages[normalizedURL]++;
+
+  pages[normalizedURL] = 1; // visit the page
+  console.log(`Visiting: ${currentURL}`);
+
+  try {
+    const html = await isValidHtml(currentURL);
+    const htmlBody = await html.text();
+    const urls = getURLsFromHTML(htmlBody, baseURL);
+
+    for (const url of urls) pages = await crawl(baseURL, url, pages);
+  } catch (error) {
+    console.error(`Error in fetching: ${error.message}\nOn page: ${currentURL}`);
+  }
+
+  return pages;
+};
+
+module.exports = { normalizeURL, getURLsFromHTML, crawl };

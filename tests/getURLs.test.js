@@ -44,7 +44,6 @@ test('ignore invalid URLs in HTML', () => {
   expect(actual).toEqual(expected);
 });
 
-// this fails
 test('handle URLs with fragments', () => {
   const htmlBody = `
     <html>
@@ -59,18 +58,17 @@ test('handle URLs with fragments', () => {
   expect(actual).toEqual(expected);
 });
 
-// advanced
-// test('ignore non-anchor tags', () => {
-//   const htmlBody = `
-//     <html>
-//       <body>
-//         <a href="https://blog.boot.dev/path">Valid</a>
-//         <img src="https://blog.boot.dev/image.png">
-//         <script src="https://blog.boot.dev/script.js"></script>
-//       </body>
-//     </html>`;
-//   const baseUrl = 'https://blog.boot.dev';
-//   const actual = getURLsFromHTML(htmlBody, baseUrl);
-//   const expected = ['blog.boot.dev/path'];
-//   expect(actual).toEqual(expected);
-// });
+test('ignore non-anchor tags', () => {
+  const htmlBody = `
+    <html>
+      <body>
+        <a href="https://blog.boot.dev/path">Valid</a>
+        <img src="https://blog.boot.dev/image.png">
+        <script src="https://blog.boot.dev/script.js"></script>
+      </body>
+    </html>`;
+  const baseUrl = 'https://blog.boot.dev';
+  const actual = getURLsFromHTML(htmlBody, baseUrl);
+  const expected = ['blog.boot.dev/path'];
+  expect(actual).toEqual(expected);
+});

@@ -8,7 +8,7 @@ function main() {
   console.log(`Crawling: ${process.argv[2]}`);
 
   const baseUrl = process.argv[2];
-  crawl(baseUrl);
+  const pages = crawl(baseUrl, baseUrl, new Set());
 }
 
 main();
