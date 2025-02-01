@@ -1,7 +1,7 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
 const { test, expect } = require('@jest/globals');
 
-const { normalizeURL } = require('./crawl');
+const { normalizeURL } = require('../src/crawl');
 
 test('normalizeURL strip protocol', () => {
   const input = 'https://blog.boot.dev/path';
