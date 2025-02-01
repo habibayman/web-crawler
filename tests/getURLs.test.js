@@ -10,7 +10,7 @@ test('get absolute URLs from HTML', () => {
 			</html>`;
   const baseUrl = 'https://blog.boot.dev/path';
   const actual = getURLsFromHTML(htmlBody, baseUrl);
-  const expected = ['blog.boot.dev/path'];
+  const expected = ['https://blog.boot.dev/path'];
   expect(actual).toEqual(expected);
 });
 
@@ -24,7 +24,7 @@ test('get relative URLs from HTML', () => {
 			</html>`;
   const baseUrl = 'https://blog.boot.dev/path';
   const actual = getURLsFromHTML(htmlBody, baseUrl);
-  const expected = ['blog.boot.dev/path', 'blog.boot.dev/path/about'];
+  const expected = ['https://blog.boot.dev/path', 'https://blog.boot.dev/path/about'];
   expect(actual).toEqual(expected);
 });
 
@@ -40,7 +40,7 @@ test('ignore invalid URLs in HTML', () => {
     </html>`;
   const baseUrl = 'https://blog.boot.dev';
   const actual = getURLsFromHTML(htmlBody, baseUrl);
-  const expected = ['blog.boot.dev/path'];
+  const expected = ['https://blog.boot.dev/path'];
   expect(actual).toEqual(expected);
 });
 
@@ -54,7 +54,7 @@ test('handle URLs with fragments', () => {
     </html>`;
   const baseUrl = 'https://blog.boot.dev';
   const actual = getURLsFromHTML(htmlBody, baseUrl);
-  const expected = ['blog.boot.dev/path#section', 'blog.boot.dev/about#team'];
+  const expected = ['https://blog.boot.dev/path#section', 'https://blog.boot.dev/about#team'];
   expect(actual).toEqual(expected);
 });
 
@@ -69,6 +69,6 @@ test('ignore non-anchor tags', () => {
     </html>`;
   const baseUrl = 'https://blog.boot.dev';
   const actual = getURLsFromHTML(htmlBody, baseUrl);
-  const expected = ['blog.boot.dev/path'];
+  const expected = ['https://blog.boot.dev/path'];
   expect(actual).toEqual(expected);
 });

@@ -10,10 +10,7 @@ const isAbsoluteUrl = (url) => {
   return protocolRegex.test(url);
 };
 
-const isValidHtml = async (url) => {
-  const resp = await fetch(url);
-  // console.log(await resp.text());
-
+const isValidPage = async (resp, url) => {
   if (resp.status > 399) {
     console.error(`Error ${resp.status} in fetch on page: ${url}`);
     return false;
@@ -25,7 +22,13 @@ const isValidHtml = async (url) => {
     return false;
   }
 
-  return resp;
+  return true;
+};
+
+const doesHaveSameDomain = (url1, url2) => {
+  const urlObj1 = new URL(url1);
+  const urlObj2 = new URL(url2);
+  return urlObj1.hostname === urlObj2.hostname;
 };
 
 const normalizeURL = (url) => {
@@ -52,36 +55,39 @@ const getURLsFromHTML = (htmlBody, baseUrl) => {
     if (!isAbsoluteUrl(url)) url = `${baseUrl}${url}`;
 
     try {
-      const normalizedURL = normalizeURL(url);
-      urls.push(normalizedURL);
+      urls.push(url);
     } catch (error) {
-      throw new Error(`Invalid URL: ${url}`);
+      console.log(`Invalid URL: ${url}`);
     }
   }
   return urls;
 };
 
 const crawl = async (baseURL, currentURL, pages) => {
-  if (!currentURL.includes(baseURL)) return; // check if both URLs belong to the same domain
-
-  //check if the page has already been visited
-  const normalizedURL = normalizeURL(currentURL);
-  if (pages.has(normalizedURL)) return pages[normalizedURL]++;
-
-  pages[normalizedURL] = 1; // visit the page
-  console.log(`Visiting: ${currentURL}`);
-
   try {
-    const html = await isValidHtml(currentURL);
-    const htmlBody = await html.text();
+    if (!doesHaveSameDomain(baseURL, currentURL)) return pages;
+
+    const normalizedCurrURL = normalizeURL(currentURL);
+    if (pages[normalizedCurrURL] > 0) {
+      pages[normalizedCurrURL]++;
+      return pages;
+    }
+
+    pages[normalizedCurrURL] = 1;
+    console.log(`Visiting: ${currentURL}`);
+    const resp = await fetch(currentURL);
+    if (!isValidPage(resp, currentURL)) return pages;
+
+    const htmlBody = await resp.text();
     const urls = getURLsFromHTML(htmlBody, baseURL);
 
     for (const url of urls) pages = await crawl(baseURL, url, pages);
+
+    return pages;
   } catch (error) {
     console.error(`Error in fetching: ${error.message}\nOn page: ${currentURL}`);
+    return pages;
   }
-
-  return pages;
 };
 
 module.exports = { normalizeURL, getURLsFromHTML, crawl };
