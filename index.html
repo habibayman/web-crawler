@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Adventure Time Web Crawler Test</title>
+    <style>
+      body {
+        font-family: 'Comic Sans MS', cursive, sans-serif;
+        background-color: #43969c;
+        color: #4b0082;
+        text-align: center;
+        padding: 20px;
+      }
+      h1 {
+        color: #ff4500;
+        font-size: 3em;
+        text-shadow: 2px 2px #ff69b4;
+      }
+      a {
+        color: #00bfff;
+        text-decoration: none;
+      }
+      a:hover {
+        color: #ff69b4;
+        text-decoration: underline;
+      }
+      .container {
+        background-color: #fff8dc;
+        border: 5px solid #ff69b4;
+        border-radius: 15px;
+        padding: 20px;
+        margin: 20px auto;
+        max-width: 800px;
+      }
+      .container img {
+        width: 100%;
+        max-width: 200px;
+        margin: 20px auto;
+        object-fit: cover;
+      }
+      .footer {
+        margin-top: 20px;
+        font-size: 0.8em;
+        color: #8a2be2;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Welcome to the Land of Ooo!</h1>
+      <p>
+        This is a test page for your web crawler, filled with Adventure Time magic and lots of URLs
+        to explore!
+      </p>
+      <img src="https://i.pinimg.com/736x/5b/0f/ed/5b0feda8600655e1ed4c44b8a31a1e75.jpg" />
+
+      <h2>Absolute URLs</h2>
+      <p>These links lead to the Land of Ooo's official sites:</p>
+      <ul>
+        <li><a href="https://adventuretime.fandom.com">Adventure Time Wiki</a></li>
+        <li><a href="https://www.cartoonnetwork.com">Cartoon Network</a></li>
+        <li><a href="https://www.hbonow.com">HBO Now</a></li>
+      </ul>
+
+      <h2>Relative URLs</h2>
+      <p>These links are relative to the Land of Ooo:</p>
+      <ul>
+        <li><a href="/about">About the Land of Ooo</a></li>
+        <li><a href="/characters">Meet the Characters</a></li>
+        <li><a href="/episodes">Watch Episodes</a></li>
+      </ul>
+
+      <h2>URLs with Fragments</h2>
+      <p>These links have fragments for specific sections:</p>
+      <ul>
+        <li><a href="https://adventuretime.fandom.com#history">History of Ooo</a></li>
+        <li><a href="/characters#finn">Finn the Human</a></li>
+        <li><a href="/episodes#season5">Season 5 Episodes</a></li>
+      </ul>
+
+      <h2>Invalid URLs</h2>
+      <p>These links are invalid and should be skipped:</p>
+      <ul>
+        <li><a href="#">Empty Link</a></li>
+        <li><a href="javascript:void(0)">JavaScript Link</a></li>
+        <li><a href="">No Href</a></li>
+      </ul>
+
+      <h2>Non-Anchor Tags</h2>
+      <p>These are not links but should be ignored:</p>
+      <ul>
+        <li>
+          <img src="https://adventuretime.fandom.com/favicon.ico" alt="Adventure Time Icon" />
+        </li>
+        <li><script src="https://adventuretime.fandom.com/script.js"></script></li>
+      </ul>
+
+      <h2>Protocol-Relative URLs</h2>
+      <p>These links use protocol-relative URLs:</p>
+      <ul>
+        <li><a href="//adventuretime.fandom.com">Adventure Time Wiki</a></li>
+        <li><a href="//www.cartoonnetwork.com">Cartoon Network</a></li>
+      </ul>
+
+      <h2>URLs with Query Parameters</h2>
+      <p>These links include query parameters:</p>
+      <ul>
+        <li>
+          <a href="https://adventuretime.fandom.com?lang=en">Adventure Time Wiki (English)</a>
+        </li>
+        <li><a href="/characters?sort=popularity">Popular Characters</a></li>
+      </ul>
+
+      <h2>Dot Notation URLs</h2>
+      <p>These links use dot notation for relative paths:</p>
+      <ul>
+        <li><a href="./about">About</a></li>
+        <li><a href="../characters">Characters</a></li>
+      </ul>
+
+      <div class="footer">
+        <p>Created by a fan of Adventure Time. Mathematical!</p>
+      </div>
+    </div>
+  </body>
+</html>
