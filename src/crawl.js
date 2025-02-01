@@ -11,7 +11,7 @@ const isAbsoluteUrl = (url) => /^[a-zA-Z][a-zA-Z\d+\-.]*:/.test(url);
 const normalizeURL = (url) => {
   try {
     const urlObj = new URL(url);
-    return `${urlObj.hostname}${urlObj.pathname}`.replace(/\/$/, ''); // remove trailing slash
+    return `${urlObj.hostname}${urlObj.pathname}${urlObj.hash}`.replace(/\/$/, ''); // remove trailing slash
   } catch (error) {
     console.log(`Invalid URL: ${url}`);
   }
